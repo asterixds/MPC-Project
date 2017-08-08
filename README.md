@@ -6,16 +6,16 @@ This project involves writing a C++ program to steer a car around a track in a s
 #### Introduction
 
 For this project, we attempt to drive the car using Model Predictive Control. The inputs to the model are: state [x, y, ψ, ν] and actuations [δ, a]. MPC uses an optimizer to find the inputs that minimize the cost function.  The elements of the cost function are: 
-•	cte: cross track error
-•	epsi: error of heading orientation
-•	v - speed limit
-•	change rate of input
+* cte: cross track error
+* epsi: error of heading orientation
+* v - speed limit
+* change rate of input
 
 In the MPC controller, we pass the current state as the initial, call the optimization solver which then returns vector of the control inputs. The first control inputs are applied and then the solver is called again based on the new state of the car returned by the simulator.
 
 The hyper-parameters to be tuned are:
-•	N - the length of the trajectory
-•	dt - each time step
+* N - the length of the trajectory
+* dt - each time step
 
 Where T = N * dt will determine the time horizon. 
 
@@ -24,8 +24,9 @@ The choice of these hyper-parameters (along with the right cost model) are criti
 #### Pre-processing
 
 The global coordinates are first converted to vehicle co-ordinates by first adjusting each of the waypoints by subtracting out px and py accordingly such that they originate from the vehicle's position and then applying a standard 2d vector transformation equations:
-ptsx[i] = x * cos(-psi) - y * sin(-psi);
-ptsy[i] = x * sin(-psi) + y * cos(-psi);
+
+    ptsx[i] = x * cos(-psi) - y * sin(-psi);
+    ptsy[i] = x * sin(-psi) + y * cos(-psi);
 
 Next the waypoints are approximated to a third-degree polynomial line and the cross-track error calculated by evaluating the polynomial against the position (zero because the origin is now the car position). Similarly, the heading error epsi is calculated from the difference of the car heading (again zero) and the derivative of 3rd degree polynomial trajectory.
 
